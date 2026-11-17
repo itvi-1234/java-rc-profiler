@@ -1,0 +1,15 @@
+apiVersion: runtimeconditions.io/v1alpha1
+kind: RuntimeConditionsProfile
+metadata:
+  name: names
+workload:
+  uri: https://services.example.com/names
+extensions:
+  - https://runtimeconditions.io/conformance/source-name-preservation:1.0.0
+conditions:
+  - kind: class
+    interface:
+      type: http_server2_url
+    api_url: https://api
+    café: latte
+    patch9: '9'

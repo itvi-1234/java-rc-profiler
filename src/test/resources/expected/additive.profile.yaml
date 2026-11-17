@@ -1,0 +1,15 @@
+apiVersion: runtimeconditions.io/v1alpha1
+kind: RuntimeConditionsProfile
+metadata:
+  name: additive
+workload:
+  uri: https://services.example.com/additive
+extensions:
+  - https://runtimeconditions.io/conformance/additive-field-base:1.0.0
+  - https://runtimeconditions.io/conformance/additive-field:1.0.0
+conditions:
+  - kind: service
+    interface:
+      type: http
+    credential:
+      token: fixture-token

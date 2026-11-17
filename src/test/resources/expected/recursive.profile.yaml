@@ -1,0 +1,19 @@
+apiVersion: runtimeconditions.io/v1alpha1
+kind: RuntimeConditionsProfile
+metadata:
+  name: recursive
+workload:
+  uri: https://services.example.com/recursive
+extensions:
+  - https://runtimeconditions.io/conformance/recursive-reference:1.0.0
+conditions:
+  - kind: tree
+    interface:
+      type: node
+    root:
+      name: root
+      children:
+        - name: a
+        - name: b
+          children:
+            - name: c

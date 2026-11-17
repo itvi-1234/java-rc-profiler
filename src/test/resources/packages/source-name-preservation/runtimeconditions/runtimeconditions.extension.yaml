@@ -1,0 +1,43 @@
+apiVersion: runtimeconditions.io/v1alpha1
+kind: RuntimeConditionsExtensionDefinition
+metadata:
+  id: https://runtimeconditions.io/conformance/source-name-preservation:1.0.0
+  version: 1.0.0
+spec:
+  kinds:
+    - name: class
+  interfaceTypes:
+    - name: http_server2_url
+      targetKind: class
+  conditionFields:
+    - name: patch9
+      appliesToKinds: [class]
+      appliesToInterfaceTypes: [http_server2_url]
+    - name: café
+      appliesToKinds: [class]
+      appliesToInterfaceTypes: [http_server2_url]
+    - name: api_url
+      appliesToKinds: [class]
+      appliesToInterfaceTypes: [http_server2_url]
+  schemas:
+    - id: source-names
+      description: Exact source names retained for emitter-specific naming.
+      appliesToKind: class
+      appliesToInterfaceType: http_server2_url
+      schema:
+        type: object
+        required: [kind, interface]
+        properties:
+          kind:
+            const: class
+          interface:
+            type: object
+            required: [type]
+            properties:
+              type:
+                const: http_server2_url
+            additionalProperties: false
+          patch9: {type: string}
+          café: {type: string}
+          api_url: {type: string}
+        additionalProperties: false

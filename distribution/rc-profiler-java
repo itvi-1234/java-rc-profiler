@@ -1,0 +1,86 @@
+#!/bin/sh
+# Runs the Java profiler on the JDK a Java developer would expect.
+#
+# The JDK is the first of these that exists:
+#   1. RC_JAVA_HOME, to use a different JDK from the build's own
+#   2. JAVA_HOME, which Maven, Gradle, IDEs, SDKMAN and CI setup steps all set
+#   3. the runtime bundled next to the jar, in a system package
+#   4. java on PATH
+# A variable that is set but names no JDK, or one older than 17, is an error. Nothing falls back past it, so the
+# profiler never silently runs on a different JDK from the one asked for.
+#
+# The jar is RC_JAVA_PROFILER_JAR if that is set, and otherwise runtimeconditions-java-profiler.jar in
+# RC_JAVA_PROFILER_HOME, ../lib/rc-profiler-java, or the directory of this script.
+set -eu
+
+fail() {
+  printf 'rc-profiler-java: %s\n' "$1" >&2
+  exit 1
+}
+
+# Follow symbolic links, so the script can be installed as a link to the file in the package.
+self=$0
+while [ -h "$self" ]; do
+  dir=$(cd "$(dirname "$self")" && pwd)
+  target=$(readlink "$self")
+  case $target in
+    /*) self=$target ;;
+    *) self=$dir/$target ;;
+  esac
+done
+here=$(cd "$(dirname "$self")" && pwd)
+
+app=
+for candidate in "${RC_JAVA_PROFILER_HOME:-}" "$here/../lib/rc-profiler-java" "$here"; do
+  if [ -n "$candidate" ] && [ -f "$candidate/runtimeconditions-java-profiler.jar" ]; then
+    app=$(cd "$candidate" && pwd)
+    break
+  fi
+done
+
+jar=${RC_JAVA_PROFILER_JAR:-}
+if [ -z "$jar" ]; then
+  [ -n "$app" ] || fail "cannot find runtimeconditions-java-profiler.jar; set RC_JAVA_PROFILER_JAR to its path"
+  jar=$app/runtimeconditions-java-profiler.jar
+fi
+[ -f "$jar" ] || fail "the profiler jar $jar does not exist"
+
+# The major version a JDK records in its release file, or nothing when it records none.
+major_of() {
+  [ -f "$1/release" ] || return 0
+  while IFS= read -r line; do
+    case $line in
+      JAVA_VERSION=*)
+        version=${line#JAVA_VERSION=}
+        version=${version#\"}
+        version=${version%\"}
+        case $version in 1.*) version=${version#1.} ;; esac
+        printf '%s' "${version%%[!0-9]*}"
+        return 0
+        ;;
+    esac
+  done < "$1/release"
+}
+
+use_home() {
+  [ -x "$1/bin/java" ] || fail "$2 is $1, but $1/bin/java is not an executable"
+  major=$(major_of "$1")
+  if [ -n "$major" ] && [ "$major" -lt 17 ]; then
+    fail "$2 is $1, which is JDK $major; the profiler needs JDK 17 or newer"
+  fi
+  java=$1/bin/java
+}
+
+java=
+if [ -n "${RC_JAVA_HOME:-}" ]; then
+  use_home "$RC_JAVA_HOME" RC_JAVA_HOME
+elif [ -n "${JAVA_HOME:-}" ]; then
+  use_home "$JAVA_HOME" JAVA_HOME
+elif [ -n "$app" ] && [ -x "$app/runtime/bin/java" ]; then
+  java=$app/runtime/bin/java
+else
+  java=$(command -v java || true)
+  [ -n "$java" ] || fail "no JDK found: set RC_JAVA_HOME or JAVA_HOME, or put java on PATH"
+fi
+
+exec "$java" -jar "$jar" "$@"

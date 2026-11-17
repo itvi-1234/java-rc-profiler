@@ -23,10 +23,10 @@ public final class BuildToolClasspathResolver {
         this.commandRunner = commandRunner;
     }
 
-    public List<Path> resolve(Path projectRoot, BuildTool buildTool, List<Path> modules) throws IOException {
+    public List<Path> resolve(Path projectRoot, BuildTool buildTool) throws IOException {
         return switch (buildTool) {
-            case MAVEN -> new MavenClasspathResolver(commandRunner).resolve(projectRoot, modules);
-            case GRADLE -> new GradleClasspathResolver(commandRunner).resolve(projectRoot, modules);
+            case MAVEN -> new MavenClasspathResolver(commandRunner).resolve(projectRoot);
+            case GRADLE -> new GradleClasspathResolver(commandRunner).resolve(projectRoot);
             case SOURCE_ONLY -> List.of();
         };
     }

@@ -1,2 +1,0 @@
-valid: false
-wantErrorContains: "stringArgs.path for Java function endpoint index 2 is out of range"

@@ -1,0 +1,117 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  RC_PROFILER_VERSION: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'v0.0.0-dev' }}
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
+  build:
+    needs: test
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Check the release version
+        run: |
+          if [[ ! "$RC_PROFILER_VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo 'release tags must have the form vMAJOR.MINOR.PATCH, optionally with a prerelease suffix' >&2
+            exit 1
+          fi
+      - name: Build and test the jar at the release version
+        run: |
+          version="${RC_PROFILER_VERSION#v}"
+          mvn -B -ntp org.codehaus.mojo:versions-maven-plugin:2.18.0:set -DnewVersion="$version" -DgenerateBackupPoms=false
+          mvn -B -ntp verify
+      - name: Check the built jar
+        run: |
+          version="${RC_PROFILER_VERSION#v}"
+          jar="target/runtimeconditions-java-profiler-$version.jar"
+          test -s "$jar"
+          test "$(java -jar "$jar" --version)" = "$version"
+          java -jar "$jar" --help
+      - name: Package the jar and the launcher
+        run: |
+          version="${RC_PROFILER_VERSION#v}"
+          assets="$RUNNER_TEMP/release-assets"
+          package="$RUNNER_TEMP/package/rc-profiler-java_$version"
+          mkdir -p "$assets" "$package"
+          cp "target/runtimeconditions-java-profiler-$version.jar" "$assets/runtimeconditions-java-profiler-$version.jar"
+          cp "target/runtimeconditions-java-profiler-$version.jar" "$package/runtimeconditions-java-profiler.jar"
+          cp distribution/rc-profiler-java README.md LICENSE "$package/"
+          tar -C "$RUNNER_TEMP/package" -czf "$assets/rc-profiler-java_$version.tar.gz" "rc-profiler-java_$version"
+      - name: Check that the archive runs
+        run: |
+          version="${RC_PROFILER_VERSION#v}"
+          mkdir -p "$RUNNER_TEMP/unpacked"
+          tar -C "$RUNNER_TEMP/unpacked" -xzf "$RUNNER_TEMP/release-assets/rc-profiler-java_$version.tar.gz"
+          test "$("$RUNNER_TEMP/unpacked/rc-profiler-java_$version/rc-profiler-java" --version)" = "$version"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-assets
+          path: ${{ runner.temp }}/release-assets/*
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release-assets
+          path: release-assets
+      - name: Verify the assets and create checksums
+        working-directory: release-assets
+        run: |
+          version="${RC_PROFILER_VERSION#v}"
+          test -s "runtimeconditions-java-profiler-$version.jar"
+          test -s "rc-profiler-java_$version.tar.gz"
+          sha256sum *.jar *.tar.gz > checksums.txt
+          sha256sum --check checksums.txt
+      - name: Publish the tagged release
+        working-directory: release-assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          prerelease=false
+          latest=true
+          if [[ "$RC_PROFILER_VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+- ]]; then
+            prerelease=true
+            latest=false
+          fi
+          if draft=$(gh release view "$RC_PROFILER_VERSION" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft); then
+            if [[ "$draft" != true ]]; then
+              echo 'refusing to replace an already published release' >&2
+              exit 1
+            fi
+            gh release upload "$RC_PROFILER_VERSION" *.jar *.tar.gz checksums.txt --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$RC_PROFILER_VERSION" *.jar *.tar.gz checksums.txt \
+              --repo "$GITHUB_REPOSITORY" --verify-tag --draft --generate-notes --title "$RC_PROFILER_VERSION"
+          fi
+          gh release edit "$RC_PROFILER_VERSION" --repo "$GITHUB_REPOSITORY" \
+            --draft=false --prerelease="$prerelease" --latest="$latest"

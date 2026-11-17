@@ -1,2 +1,0 @@
-valid: false
-wantErrorContains: "kind must be RuntimeConditionsBinding"

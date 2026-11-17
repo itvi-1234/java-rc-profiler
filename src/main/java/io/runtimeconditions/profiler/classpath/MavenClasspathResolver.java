@@ -17,18 +17,13 @@ public final class MavenClasspathResolver implements ClasspathResolver {
     }
 
     @Override
-    public List<Path> resolve(Path projectRoot, List<Path> modules) throws IOException {
+    public List<Path> resolve(Path projectRoot) throws IOException {
         Path root = projectRoot.toAbsolutePath().normalize();
         Set<Path> entries = ClasspathEntries.set();
         Path executable = mavenExecutable(root);
 
         resolveProject(root, root, executable, entries);
         addMavenOutput(entries, root);
-        for (Path module : modules) {
-            Path normalized = module.toAbsolutePath().normalize();
-            resolveProject(root, normalized, executable, entries);
-            addMavenOutput(entries, normalized);
-        }
         return new ArrayList<>(entries);
     }
 
@@ -79,6 +74,5 @@ public final class MavenClasspathResolver implements ClasspathResolver {
 
     private void addMavenOutput(Set<Path> entries, Path project) {
         ClasspathEntries.addIfExists(entries, project.resolve("target/classes"));
-        ClasspathEntries.addIfExists(entries, project.resolve("target/test-classes"));
     }
 }

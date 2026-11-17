@@ -1,2 +1,0 @@
-valid: false
-wantErrorContains: "classArg for Java function response points at non-Class parameter schemaType String"

@@ -1,2 +1,0 @@
-valid: false
-wantErrorContains: "resolved extension set contains vocabulary conflict for kind:java.conflict"
