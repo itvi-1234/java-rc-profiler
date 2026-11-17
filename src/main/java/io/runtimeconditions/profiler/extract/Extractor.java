@@ -295,6 +295,11 @@ public final class Extractor {
                 }
             }
         }
+        // The members of a source's own package shadow the types it imports on demand, as in Java.
+        Binding own = catalog.byJavaPackage(source.packageName);
+        if (own != null && (own.types().containsKey(parts[0]) || declaresClass(own, parts[0]))) {
+            return new TypeName(own, parts[0], rest(parts, 1));
+        }
         for (SourceFile.Import item : source.imports) {
             if (!item.isStatic() && item.onDemand()) {
                 Binding binding = catalog.byJavaPackage(item.qualifier());

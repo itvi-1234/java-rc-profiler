@@ -151,6 +151,18 @@ class SyntaxFormsTest {
     }
 
     @Test
+    void codeInTheSamePackageAsABindingNeedsNoImports(@TempDir Path temp) throws IOException {
+        Path project = temp.resolve("p");
+        Files.createDirectories(project.resolve("src/main/java/example/conformance/ownedkindinterface"));
+        Files.writeString(project.resolve("src/main/java/example/conformance/ownedkindinterface/Same.java"),
+                "package example.conformance.ownedkindinterface;\nfinal class Same { static final Object S = Bindings.service(new Http(\"https://example.com\"), new Region(\"eu\")); }\n");
+        Result result = generate(project, packages("owned-kind-interface"), "same");
+        assertEquals("", result.err());
+        assertEquals(0, result.code());
+        assertTrue(result.out().contains("endpoint: https://example.com"), result.out());
+    }
+
+    @Test
     void aClassWithTheSameNameAsAGeneratedOneIsNotMistakenForIt(@TempDir Path temp) throws IOException {
         Path project = temp.resolve("p");
         Files.createDirectories(project.resolve("src/main/java/t"));
