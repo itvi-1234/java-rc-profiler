@@ -1,0 +1,6 @@
+apiVersion: runtimeconditions.io/file-manifest/v1alpha1
+kind: RuntimeConditionsFileManifest
+files:
+    runtimeconditions.binding-model.yaml: 1c079c1d928de53f2f1fb4b229324493d8086e91a57793dc06d9411cec4a8491
+    runtimeconditions.bindings.yaml: 36fed3fedfc2c75a326fa429779fd08dee739af202e769ba7a6965ff0a648792
+    runtimeconditions.extension.yaml: 645e5de82fcfc22c1e3b3bf06534c0cf13baed12b4994548a1f9a9be53a9e7f4

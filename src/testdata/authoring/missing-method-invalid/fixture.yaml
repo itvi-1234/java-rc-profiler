@@ -1,2 +1,0 @@
-valid: false
-wantErrorContains: "Fixture.declare is not declared in Java package"
