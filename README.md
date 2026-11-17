@@ -18,8 +18,9 @@ foundation or competing project.
 
 ## Requirements
 
-- A **JDK**, 17 or newer, to run the profiler. A JRE is not enough, because the profiler uses the
-  JDK's parser to read your source.
+- A **JDK**, 17 or newer, to run the profiler. A JRE is not enough, because the profiler uses the JDK's parser
+  (the jdk.compiler module) to read your source, and says so when it is missing. A runtime made with jlink that
+  includes jdk.compiler also works: java.base, java.desktop, java.sql and jdk.compiler are all it needs.
 - Generated Java binding packages for the extensions your code declares against, on the classpath.
   They are built by the
   [Java binding emitter](https://github.com/runtimeconditions/extensions/tree/main/tooling/extension-bindings/emitters/java)

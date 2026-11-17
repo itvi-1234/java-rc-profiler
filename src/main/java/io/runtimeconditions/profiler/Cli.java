@@ -93,6 +93,13 @@ public final class Cli {
         } catch (ProfilerException e) {
             report(err, json, e.stage(), e.getMessage(), e.location(), e.toString());
             return 1;
+        } catch (NoClassDefFoundError e) {
+            // A runtime without the jdk.compiler module, such as a JRE, cannot parse Java source.
+            String message = String.valueOf(e.getMessage()).startsWith("com/sun/source") || String.valueOf(e.getMessage()).startsWith("javax/tools")
+                    ? "the profiler needs a JDK, not a JRE, to read Java source: the jdk.compiler module is missing"
+                    : String.valueOf(e);
+            report(err, json, "environment", message, null, "error: environment: " + message);
+            return 1;
         } catch (IOException | RuntimeException e) {
             report(err, json, "internal", String.valueOf(e.getMessage()), null, "error: " + e.getMessage());
             return 1;
