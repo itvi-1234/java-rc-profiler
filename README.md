@@ -118,9 +118,15 @@ mvn verify
 
 `target/runtimeconditions-java-profiler-<version>.jar` is a runnable jar with its dependencies.
 
-The tests use binding packages in `src/test/resources/packages`, built by the Java binding emitter from
-the same models as the TypeScript profiler's test packages. The profiles they produce are compared with
-the ones the TypeScript profiler's tests review. They have the layout that
+The profiler knows no extension by name: it reads the declaration functions, types, and schemas from
+the packages' manifests and models. Its tests are general in the same way. They use the **conformance
+cases** of `runtimeconditions/extensions`, small made-up extensions that each exercise one shape of the
+binding model: an owned kind and interface, an additive field, transitive dependencies, a recursive type, a
+union, collections and maps, values scoped to an interface type, Unicode names, and an extension that is
+only a dependency. `scripts/build-test-packages.py` builds the packages in `src/test/resources/packages`
+from them with the normalizer and the Java binding emitter. They have the layout that
 [`ci/generate-java.py`](https://github.com/runtimeconditions/extensions/blob/main/tooling/extension-bindings/ci/generate-java.py)
-in `runtimeconditions/extensions` generates: the three resources and a file manifest in the
-`runtimeconditions` directory.
+generates: the three resources and a file manifest in the `runtimeconditions` directory.
+
+Each workload under `src/test/resources/workloads` declares against one case, and the profile it produces
+is compared with the reviewed one in `src/test/resources/expected`.

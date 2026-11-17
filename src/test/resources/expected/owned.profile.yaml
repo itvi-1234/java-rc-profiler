@@ -1,0 +1,14 @@
+apiVersion: runtimeconditions.io/v1alpha1
+kind: RuntimeConditionsProfile
+metadata:
+  name: owned
+workload:
+  uri: https://services.example.com/owned
+extensions:
+  - https://runtimeconditions.io/conformance/owned-kind-interface:1.0.0
+conditions:
+  - kind: service
+    interface:
+      type: http
+      endpoint: https://example.com
+    region: eu

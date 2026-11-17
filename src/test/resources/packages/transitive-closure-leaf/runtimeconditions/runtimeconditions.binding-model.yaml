@@ -1,0 +1,37 @@
+apiVersion: runtimeconditions.io/binding-model/v1alpha1
+kind: RuntimeConditionsBindingModel
+metadata:
+    semanticSha256: 335085cd4153011ec3390249b616741590e21866d6562330540e46153e6c11d2
+    normalizer:
+        name: rc-binding-model
+        version: 0.1.0
+        sha256: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+coreProfileSchema:
+    id: https://runtimeconditions.io/schemas/profile/0.4.0/runtimeconditions.profile.schema.yaml
+    version: 0.4.0
+    semanticSha256: ed447dccefd7507d905b0b6177b1386d8ee96a1d053b731939a9a7ae973d5af1
+rootExtension:
+    id: https://runtimeconditions.io/conformance/transitive-leaf:1.0.0
+    version: 1.0.0
+    semanticSha256: bb92905f025afe381aed2e27a555556b32662b2ed957eada086857da87c766bd
+extensions:
+    - id: https://runtimeconditions.io/conformance/transitive-leaf:1.0.0
+      version: 1.0.0
+      semanticSha256: bb92905f025afe381aed2e27a555556b32662b2ed957eada086857da87c766bd
+vocabulary:
+    owners:
+        - coordinate: kind:worker
+          category: kind
+          owner: https://runtimeconditions.io/conformance/transitive-leaf:1.0.0
+          kind: worker
+    ownedDeclarations:
+        - coordinate: kind:worker
+          owner: https://runtimeconditions.io/conformance/transitive-leaf:1.0.0
+          kind: worker
+          provenance:
+            owner: https://runtimeconditions.io/conformance/transitive-leaf:1.0.0
+            extensionSha256: bb92905f025afe381aed2e27a555556b32662b2ed957eada086857da87c766bd
+            coordinate: kind:worker
+scopes:
+    - coordinate: 'worker:'
+      kind: worker

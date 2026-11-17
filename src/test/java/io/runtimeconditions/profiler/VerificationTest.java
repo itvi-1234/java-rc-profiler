@@ -17,15 +17,19 @@ import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.util.HexFormat;
 import java.util.function.UnaryOperator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+/** What the profiler checks about a binding package before it reads any source. */
 class VerificationTest {
-    private static final String COMMON = "common-integrations";
-    private static final String ENV = "env-configuration";
+    private static final String OWNED = "owned-kind-interface";
+    private static final String ADDON = "additive-field";
+    private static final String BASE = "additive-field-dependency";
 
     @TempDir
     Path temp;
@@ -40,13 +44,14 @@ class VerificationTest {
     private static void rewrite(Path pkg, String resource, UnaryOperator<String> change, boolean updateManifest) throws IOException {
         Path directory = pkg.resolve("runtimeconditions");
         Path file = directory.resolve(resource);
-        String text = change.apply(Files.readString(file));
+        String before = Files.readString(file);
+        String text = change.apply(before);
+        assertTrue(!text.equals(before), "the change did not alter " + resource);
         Files.writeString(file, text);
         if (updateManifest) {
             Path listing = directory.resolve("runtimeconditions.file-manifest.yaml");
-            String old = Files.readString(listing);
             StringBuilder out = new StringBuilder();
-            for (String line : old.split("\n")) {
+            for (String line : Files.readString(listing).split("\n")) {
                 out.append(line.trim().startsWith(resource + ":")
                         ? "    " + resource + ": " + sha256(text.getBytes(StandardCharsets.UTF_8)) : line).append('\n');
             }
@@ -62,15 +67,25 @@ class VerificationTest {
         }
     }
 
-    private static Result cache(String classpath) {
-        return generate(workload("cache"), classpath, "cache");
+    private static String valueOf(Path pkg, String resource, String pattern) throws IOException {
+        Matcher matcher = Pattern.compile(pattern, Pattern.MULTILINE).matcher(Files.readString(pkg.resolve("runtimeconditions").resolve(resource)));
+        assertTrue(matcher.find(), pattern);
+        return matcher.group(1);
+    }
+
+    private static Result owned(String classpath) {
+        return generate(workload("owned"), classpath, "owned");
+    }
+
+    private static Result additive(String classpath) {
+        return generate(workload("additive"), classpath, "additive");
     }
 
     @Test
     void aChangedResourceNoLongerMatchesItsFileManifestDigest() throws IOException {
-        Path common = copyOf(COMMON);
-        rewrite(common, "runtimeconditions.extension.yaml", text -> text + "# changed\n", false);
-        Result result = cache(classpath(common, pkg(ENV)));
+        Path owned = copyOf(OWNED);
+        rewrite(owned, "runtimeconditions.extension.yaml", text -> text + "# changed\n", false);
+        Result result = owned(owned.toString());
         assertEquals(1, result.code());
         assertEquals("", result.out());
         assertTrue(result.err().contains("runtimeconditions.extension.yaml differs from its file manifest digest"), result.err());
@@ -78,37 +93,66 @@ class VerificationTest {
 
     @Test
     void aResourceThatTheFileManifestDoesNotListIsRejected() throws IOException {
-        Path common = copyOf(COMMON);
-        Path listing = common.resolve("runtimeconditions/runtimeconditions.file-manifest.yaml");
+        Path owned = copyOf(OWNED);
+        Path listing = owned.resolve("runtimeconditions/runtimeconditions.file-manifest.yaml");
         Files.writeString(listing, Files.readString(listing).replaceAll("(?m)^ {4}runtimeconditions.extension.yaml:.*\n", ""));
-        Result result = cache(classpath(common, pkg(ENV)));
+        Result result = owned(owned.toString());
         assertEquals(1, result.code());
         assertTrue(result.err().contains("runtimeconditions.extension.yaml is not listed in the file manifest"), result.err());
     }
 
     @Test
     void aPackageWithoutTheFileManifestIsRejected() throws IOException {
-        Path common = copyOf(COMMON);
-        Files.delete(common.resolve("runtimeconditions/runtimeconditions.file-manifest.yaml"));
-        Result result = cache(classpath(common, pkg(ENV)));
+        Path owned = copyOf(OWNED);
+        Files.delete(owned.resolve("runtimeconditions/runtimeconditions.file-manifest.yaml"));
+        Result result = owned(owned.toString());
         assertEquals(1, result.code());
         assertTrue(result.err().contains("runtimeconditions.file-manifest.yaml is missing"), result.err());
     }
 
     @Test
+    void aMissingResourceIsRejected() throws IOException {
+        Path owned = copyOf(OWNED);
+        Files.delete(owned.resolve("runtimeconditions/runtimeconditions.binding-model.yaml"));
+        Result result = owned(owned.toString());
+        assertEquals(1, result.code());
+        assertTrue(result.err().contains("runtimeconditions.binding-model.yaml is missing"), result.err());
+    }
+
+    // ---- the closure ---------------------------------------------------------------------------------------
+
+    @Test
     void aDependencyWithoutABindingPackageFailsTheClosureCheck() {
-        Result result = cache(pkg(ENV).toString());
+        Result result = additive(pkg(ADDON).toString());
         assertEquals(1, result.code());
         assertEquals("", result.out());
         assertTrue(result.err().contains("has no binding package on the classpath"), result.err());
     }
 
     @Test
-    void aDependencyGeneratedFromAnotherExtensionVersionIsRejected() throws IOException {
-        Result result = cache(classpath(pkg("common-integrations-v1alpha2"), pkg(ENV)));
+    void aDependencyGeneratedFromAnotherDigestOfTheExtensionIsRejected() throws IOException {
+        Path addon = copyOf(ADDON);
+        String digest = valueOf(pkg(BASE), "runtimeconditions.bindings.yaml", "^extension:\\n  id: .*\\n  semanticSha256: ([0-9a-f]{64})");
+        rewrite(addon, "runtimeconditions.binding-model.yaml", text -> text.replace(digest, "ab".repeat(32)), true);
+        Result result = additive(classpath(addon, pkg(BASE)));
         assertEquals(1, result.code());
-        assertTrue(result.err().contains("has no binding package on the classpath"), result.err());
+        assertTrue(result.err().contains("differs from the extension"), result.err());
     }
+
+    @Test
+    void twoEntriesThatProvideTheSameJavaPackageAreRejected() throws IOException {
+        Result result = owned(classpath(pkg(OWNED), copyOf(OWNED)));
+        assertEquals(1, result.code());
+        assertTrue(result.err().contains("provide the Java package"), result.err());
+    }
+
+    @Test
+    void aClasspathEntryThatDoesNotExistIsIgnored() {
+        Result result = owned(classpath(pkg(OWNED), temp.resolve("missing.jar")));
+        assertEquals(0, result.code(), result.err());
+    }
+
+    // ---- identity ------------------------------------------------------------------------------------------
 
     private static final String CORE_0_4_0 = """
             coreProfileSchema:
@@ -127,91 +171,81 @@ class VerificationTest {
 
     @Test
     void aPackageGeneratedAgainstAnotherCoreSchemaIsRejected() throws IOException {
-        Path common = copyOf(COMMON);
-        rewrite(common, "runtimeconditions.binding-model.yaml", core("0.3.0", "ab".repeat(32)), true);
-        Result result = cache(classpath(common, pkg(ENV)));
+        Path owned = copyOf(OWNED);
+        rewrite(owned, "runtimeconditions.binding-model.yaml", core("0.3.0", "ab".repeat(32)), true);
+        Result result = owned(owned.toString());
         assertEquals(1, result.code());
         assertTrue(result.err().contains("generated against core profile schema 0.3.0"), result.err());
     }
 
     @Test
     void bindingsGeneratedAgainstTheApprovedCore020InputAreAccepted() throws IOException {
-        Path common = copyOf(COMMON);
-        Path env = copyOf(ENV);
-        for (Path pkg : new Path[] {common, env}) {
-            rewrite(pkg, "runtimeconditions.binding-model.yaml", core("0.2.0", "a090a8016d045f9c3fa872a67f8df293b77ca2809a1bea5ae9fa31a27a06109a"), true);
-        }
-        Result result = cache(classpath(common, env));
+        Path owned = copyOf(OWNED);
+        rewrite(owned, "runtimeconditions.binding-model.yaml", core("0.2.0", "a090a8016d045f9c3fa872a67f8df293b77ca2809a1bea5ae9fa31a27a06109a"), true);
+        Result result = owned(owned.toString());
         assertEquals("", result.err());
         assertEquals(0, result.code());
     }
 
     @Test
     void core020WithAnyOtherDigestIsRejected() throws IOException {
-        Path common = copyOf(COMMON);
-        rewrite(common, "runtimeconditions.binding-model.yaml", core("0.2.0", "ab".repeat(32)), true);
-        Result result = cache(classpath(common, pkg(ENV)));
+        Path owned = copyOf(OWNED);
+        rewrite(owned, "runtimeconditions.binding-model.yaml", core("0.2.0", "ab".repeat(32)), true);
+        Result result = owned(owned.toString());
         assertEquals(1, result.code());
         assertTrue(result.err().contains("generated against core profile schema 0.2.0"), result.err());
     }
 
     @Test
     void aManifestThatNamesAnotherLanguageIsRejected() throws IOException {
-        Path common = copyOf(COMMON);
-        rewrite(common, "runtimeconditions.bindings.yaml", text -> text.replace("language: java", "language: python"), true);
-        Result result = cache(classpath(common, pkg(ENV)));
+        Path owned = copyOf(OWNED);
+        rewrite(owned, "runtimeconditions.bindings.yaml", text -> text.replace("language: java", "language: python"), true);
+        Result result = owned(owned.toString());
         assertEquals(1, result.code());
-        assertTrue(result.err().contains("bindings"), result.err());
+        assertTrue(result.err().contains("does not match its schema"), result.err());
     }
 
     @Test
     void aManifestAndAModelThatDisagreeOnTheModelDigestAreRejected() throws IOException {
-        Path common = copyOf(COMMON);
-        rewrite(common, "runtimeconditions.bindings.yaml",
+        Path owned = copyOf(OWNED);
+        rewrite(owned, "runtimeconditions.bindings.yaml",
                 text -> text.replaceFirst("(?m)^(model:\\n  apiVersion: .*\\n  semanticSha256: )[0-9a-f]{64}", "$1" + "ab".repeat(32)), true);
-        Result result = cache(classpath(common, pkg(ENV)));
+        Result result = owned(owned.toString());
         assertEquals(1, result.code());
         assertTrue(result.err().contains("disagree on the model digest"), result.err());
     }
 
     @Test
     void aManifestAndAModelThatDisagreeOnTheRootExtensionAreRejected() throws IOException {
-        Path common = copyOf(COMMON);
-        rewrite(common, "runtimeconditions.bindings.yaml",
+        Path owned = copyOf(OWNED);
+        rewrite(owned, "runtimeconditions.bindings.yaml",
                 text -> text.replaceFirst("(?m)^(extension:\\n  id: .*\\n  semanticSha256: )[0-9a-f]{64}", "$1" + "cd".repeat(32)), true);
-        Result result = cache(classpath(common, pkg(ENV)));
+        Result result = owned(owned.toString());
         assertEquals(1, result.code());
         assertTrue(result.err().contains("disagree on the root extension"), result.err());
     }
 
     @Test
     void anExtensionDefinitionWithAnotherIdIsRejected() throws IOException {
-        Path common = copyOf(COMMON);
-        rewrite(common, "runtimeconditions.extension.yaml", text -> text.replace("common-integrations/v1alpha1", "common-integrations/v9"), true);
-        Result result = cache(classpath(common, pkg(ENV)));
+        Path owned = copyOf(OWNED);
+        rewrite(owned, "runtimeconditions.extension.yaml", text -> text.replace("owned-kind-interface:1.0.0", "owned-kind-interface:9.9.9"), true);
+        Result result = owned(owned.toString());
         assertEquals(1, result.code());
         assertTrue(result.err().contains("extension definition id differs"), result.err());
     }
 
     @Test
-    void twoEntriesThatProvideTheSameJavaPackageAreRejected() throws IOException {
-        Result result = cache(classpath(pkg(COMMON), copyOf(COMMON), pkg(ENV)));
-        assertEquals(1, result.code());
-        assertTrue(result.err().contains("provide the Java package"), result.err());
-    }
-
-    @Test
     void aMalformedManifestIsRejectedWithItsLocation() throws IOException {
-        Path common = copyOf(COMMON);
-        rewrite(common, "runtimeconditions.bindings.yaml", text -> text + "\n: : : [\n", true);
-        Result result = cache(classpath(common, pkg(ENV)));
+        Path owned = copyOf(OWNED);
+        rewrite(owned, "runtimeconditions.bindings.yaml", text -> text + "\n: : : [\n", true);
+        Result result = owned(owned.toString());
         assertEquals(1, result.code());
         assertTrue(result.err().contains("invalid YAML"), result.err());
     }
 
-    // ---- jars -----------------------------------------------------------------------------------------------
+    // ---- jars ----------------------------------------------------------------------------------------------
 
-    private Path jar(String name, String groupId, String artifactId, String version) throws IOException {
+    private Path jar(String name, String artifactId, String version) throws IOException {
         Path jar = temp.resolve(name + ".jar");
         try (OutputStream out = Files.newOutputStream(jar); ZipOutputStream zip = new ZipOutputStream(out)) {
             try (Stream<Path> files = Files.walk(pkg(name))) {
@@ -221,9 +255,9 @@ class VerificationTest {
                     zip.closeEntry();
                 }
             }
-            if (groupId != null) {
-                zip.putNextEntry(new ZipEntry("META-INF/maven/" + groupId + "/" + artifactId + "/pom.properties"));
-                zip.write(("groupId=" + groupId + "\nartifactId=" + artifactId + "\nversion=" + version + "\n").getBytes(StandardCharsets.UTF_8));
+            if (artifactId != null) {
+                zip.putNextEntry(new ZipEntry("META-INF/maven/example.conformance/" + artifactId + "/pom.properties"));
+                zip.write(("groupId=example.conformance\nartifactId=" + artifactId + "\nversion=" + version + "\n").getBytes(StandardCharsets.UTF_8));
                 zip.closeEntry();
             }
         }
@@ -232,10 +266,8 @@ class VerificationTest {
 
     @Test
     void packagesReadFromJarsGiveTheSameProfileAsDirectories() throws IOException {
-        Path common = jar(COMMON, "io.runtimeconditions.bindings", "runtimeconditions-common-integrations", "0.1.0");
-        Path env = jar(ENV, "io.runtimeconditions.bindings", "runtimeconditions-env-configuration", "0.1.0");
-        Result fromJars = cache(classpath(common, env));
-        Result fromDirectories = cache(classpath(pkg(COMMON), pkg(ENV)));
+        Result fromJars = additive(classpath(jar(ADDON, ADDON, "1.0.0"), jar(BASE, BASE, "1.0.0")));
+        Result fromDirectories = additive(classpath(pkg(ADDON), pkg(BASE)));
         assertEquals("", fromJars.err());
         assertEquals(0, fromJars.code());
         assertEquals(fromDirectories.out(), fromJars.out());
@@ -243,22 +275,15 @@ class VerificationTest {
 
     @Test
     void aJarWhoseMavenCoordinatesDifferFromTheManifestIsRejected() throws IOException {
-        Path common = jar(COMMON, "io.runtimeconditions.bindings", "runtimeconditions-common-integrations", "9.9.9");
-        Result result = cache(classpath(common, pkg(ENV)));
+        Result result = owned(jar(OWNED, OWNED, "9.9.9").toString());
         assertEquals(1, result.code());
         assertTrue(result.err().contains("differs from the jar's Maven coordinates"), result.err());
     }
 
     @Test
     void aJarWithoutMavenMetadataIsAccepted() throws IOException {
-        Result result = cache(classpath(jar(COMMON, null, null, null), jar(ENV, null, null, null)));
+        Result result = owned(jar(OWNED, null, null).toString());
         assertEquals("", result.err());
         assertEquals(0, result.code());
-    }
-
-    @Test
-    void aClasspathEntryThatDoesNotExistIsIgnored() {
-        Result result = cache(classpath(pkg(COMMON), pkg(ENV), temp.resolve("missing.jar")));
-        assertEquals(0, result.code(), result.err());
     }
 }

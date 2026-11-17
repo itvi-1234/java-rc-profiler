@@ -1,0 +1,349 @@
+apiVersion: runtimeconditions.io/binding-model/v1alpha1
+kind: RuntimeConditionsBindingModel
+metadata:
+    semanticSha256: e9044bbb45bcec0e99b06761c0fa644ba203e57b30a003a4c5ddce10f377cce3
+    normalizer:
+        name: rc-binding-model
+        version: 0.1.0
+        sha256: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+coreProfileSchema:
+    id: https://runtimeconditions.io/schemas/profile/0.4.0/runtimeconditions.profile.schema.yaml
+    version: 0.4.0
+    semanticSha256: ed447dccefd7507d905b0b6177b1386d8ee96a1d053b731939a9a7ae973d5af1
+rootExtension:
+    id: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+    version: 1.0.0
+    semanticSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+extensions:
+    - id: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+      version: 1.0.0
+      semanticSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+vocabulary:
+    owners:
+        - coordinate: interface:collection:items
+          category: interface
+          owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+          kind: collection
+          interfaceType: items
+        - coordinate: kind:collection
+          category: kind
+          owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+          kind: collection
+    ownedDeclarations:
+        - coordinate: kind:collection
+          owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+          kind: collection
+          provenance:
+            owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+            extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+            coordinate: kind:collection
+    interfaces:
+        - coordinate: interface:collection:items
+          owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+          kind: collection
+          type: items
+          provenance:
+            owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+            extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+            coordinate: interface:collection:items
+scopes:
+    - coordinate: collection:items
+      kind: collection
+      interfaceType: items
+      applicableSchemas:
+        - https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+      projection:
+        kind: object
+        required:
+            - interface
+        properties:
+            - name: entries
+              shape:
+                kind: array
+                items:
+                    kind: object
+                    required:
+                        - key
+                        - value
+                    properties:
+                        - name: key
+                          required: true
+                          shape:
+                            kind: scalar
+                            scalar: string
+                            provenance:
+                                owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                                extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                                coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                                jsonPointer: /properties/entries/items/properties/key
+                          provenance:
+                            owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                            extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                            coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                            jsonPointer: /properties/entries/items/properties/key
+                        - name: value
+                          required: true
+                          shape:
+                            kind: scalar
+                            scalar: integer
+                            values:
+                                - value: 1
+                                - value: 2
+                            provenance:
+                                owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                                extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                                coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                                jsonPointer: /properties/entries/items/properties/value
+                          provenance:
+                            owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                            extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                            coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                            jsonPointer: /properties/entries/items/properties/value
+                    provenance:
+                        owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                        extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                        coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                        jsonPointer: /properties/entries/items
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                    extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                    coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                    jsonPointer: /properties/entries
+              provenance:
+                owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                jsonPointer: /properties/entries
+            - name: interface
+              required: true
+              shape:
+                kind: object
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                    extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                    coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                    jsonPointer: /properties/interface
+              provenance:
+                owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                jsonPointer: /properties/interface
+            - name: labels
+              shape:
+                kind: map
+                mapValues:
+                    kind: scalar
+                    scalar: string
+                    provenance:
+                        owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                        extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                        coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                        jsonPointer: /properties/labels/additionalProperties
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                    extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                    coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                    jsonPointer: /properties/labels
+              provenance:
+                owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                jsonPointer: /properties/labels
+            - name: tags
+              shape:
+                kind: array
+                items:
+                    kind: scalar
+                    scalar: string
+                    provenance:
+                        owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                        extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                        coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                        jsonPointer: /properties/tags/items
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                    extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                    coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                    jsonPointer: /properties/tags
+              provenance:
+                owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                jsonPointer: /properties/tags
+        provenance:
+            owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+            extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+            coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+schemas:
+    - coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+      owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+      id: collection-shapes
+      kind: collection
+      interfaceType: items
+      exact:
+        additionalProperties: false
+        properties:
+            entries:
+                items:
+                    additionalProperties: false
+                    properties:
+                        key:
+                            type: string
+                        value:
+                            enum:
+                                - 1
+                                - 2
+                            type: integer
+                    required:
+                        - key
+                        - value
+                    type: object
+                type: array
+            interface:
+                additionalProperties: false
+                properties:
+                    type:
+                        const: items
+                required:
+                    - type
+                type: object
+            kind:
+                const: collection
+            labels:
+                additionalProperties:
+                    type: string
+                type: object
+            tags:
+                items:
+                    type: string
+                type: array
+        required:
+            - interface
+            - kind
+        type: object
+      projection:
+        kind: object
+        required:
+            - interface
+        properties:
+            - name: entries
+              shape:
+                kind: array
+                items:
+                    kind: object
+                    required:
+                        - key
+                        - value
+                    properties:
+                        - name: key
+                          required: true
+                          shape:
+                            kind: scalar
+                            scalar: string
+                            provenance:
+                                owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                                extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                                coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                                jsonPointer: /properties/entries/items/properties/key
+                          provenance:
+                            owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                            extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                            coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                            jsonPointer: /properties/entries/items/properties/key
+                        - name: value
+                          required: true
+                          shape:
+                            kind: scalar
+                            scalar: integer
+                            values:
+                                - value: 1
+                                - value: 2
+                            provenance:
+                                owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                                extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                                coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                                jsonPointer: /properties/entries/items/properties/value
+                          provenance:
+                            owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                            extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                            coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                            jsonPointer: /properties/entries/items/properties/value
+                    provenance:
+                        owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                        extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                        coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                        jsonPointer: /properties/entries/items
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                    extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                    coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                    jsonPointer: /properties/entries
+              provenance:
+                owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                jsonPointer: /properties/entries
+            - name: interface
+              required: true
+              shape:
+                kind: object
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                    extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                    coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                    jsonPointer: /properties/interface
+              provenance:
+                owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                jsonPointer: /properties/interface
+            - name: labels
+              shape:
+                kind: map
+                mapValues:
+                    kind: scalar
+                    scalar: string
+                    provenance:
+                        owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                        extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                        coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                        jsonPointer: /properties/labels/additionalProperties
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                    extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                    coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                    jsonPointer: /properties/labels
+              provenance:
+                owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                jsonPointer: /properties/labels
+            - name: tags
+              shape:
+                kind: array
+                items:
+                    kind: scalar
+                    scalar: string
+                    provenance:
+                        owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                        extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                        coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                        jsonPointer: /properties/tags/items
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                    extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                    coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                    jsonPointer: /properties/tags
+              provenance:
+                owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+                extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+                coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+                jsonPointer: /properties/tags
+        provenance:
+            owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+            extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+            coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes
+      provenance:
+        owner: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+        extensionSha256: 00ef6c42193953858fddaa8d77ac1c1385231969b07cbadcc64baea5ed4922af
+        coordinate: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0#schema:collection-shapes

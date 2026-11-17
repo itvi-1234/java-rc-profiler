@@ -38,8 +38,13 @@ final class TestSupport {
         return String.join(java.io.File.pathSeparator, parts);
     }
 
-    static String both() {
-        return classpath(pkg("common-integrations"), pkg("env-configuration"));
+    /** The classpath of the named conformance packages. */
+    static String packages(String... names) {
+        Path[] entries = new Path[names.length];
+        for (int i = 0; i < names.length; i++) {
+            entries[i] = pkg(names[i]);
+        }
+        return classpath(entries);
     }
 
     static Path workload(String name) {

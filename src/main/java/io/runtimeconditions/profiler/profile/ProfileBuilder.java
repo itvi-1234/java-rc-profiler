@@ -47,9 +47,12 @@ public final class ProfileBuilder {
         return profile;
     }
 
-    /** Writes an extension as short-url:version when its id ends with /version/runtimeconditions.extension.yaml. */
+    /**
+     * Writes an extension as short-url:version when its id ends with /version/runtimeconditions.extension.yaml.
+     * Any other id gets :version appended, unless it already ends with it.
+     */
     public static String extensionReference(String id, String version) {
-        if (version == null || version.isEmpty()) {
+        if (version == null || version.isEmpty() || id.endsWith(":" + version)) {
             return id;
         }
         String tail = "/" + version + "/runtimeconditions.extension.yaml";

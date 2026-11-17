@@ -1,0 +1,62 @@
+apiVersion: runtimeconditions.io/binding-model/v1alpha1
+kind: RuntimeConditionsBindingModel
+metadata:
+    semanticSha256: 856f57a468db5fa660530a7814b2d27772b65a50430f1ed8a86199c6faa64680
+    normalizer:
+        name: rc-binding-model
+        version: 0.1.0
+        sha256: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+coreProfileSchema:
+    id: https://runtimeconditions.io/schemas/profile/0.4.0/runtimeconditions.profile.schema.yaml
+    version: 0.4.0
+    semanticSha256: ed447dccefd7507d905b0b6177b1386d8ee96a1d053b731939a9a7ae973d5af1
+rootExtension:
+    id: https://runtimeconditions.io/conformance/transitive-middle:1.0.0
+    version: 1.0.0
+    semanticSha256: 22f202e8e90af91c88d03f693336bbc3f5e76fda184911d38f753971eafd0699
+extensions:
+    - id: https://runtimeconditions.io/conformance/transitive-leaf:1.0.0
+      version: 1.0.0
+      semanticSha256: bb92905f025afe381aed2e27a555556b32662b2ed957eada086857da87c766bd
+    - id: https://runtimeconditions.io/conformance/transitive-middle:1.0.0
+      version: 1.0.0
+      semanticSha256: 22f202e8e90af91c88d03f693336bbc3f5e76fda184911d38f753971eafd0699
+      dependencies:
+        - https://runtimeconditions.io/conformance/transitive-leaf:1.0.0
+dependencyEdges:
+    - from: https://runtimeconditions.io/conformance/transitive-middle:1.0.0
+      to: https://runtimeconditions.io/conformance/transitive-leaf:1.0.0
+vocabulary:
+    owners:
+        - coordinate: interface:worker:process
+          category: interface
+          owner: https://runtimeconditions.io/conformance/transitive-middle:1.0.0
+          kind: worker
+          interfaceType: process
+        - coordinate: kind:worker
+          category: kind
+          owner: https://runtimeconditions.io/conformance/transitive-leaf:1.0.0
+          kind: worker
+    importedDeclarations:
+        - coordinate: kind:worker
+          owner: https://runtimeconditions.io/conformance/transitive-leaf:1.0.0
+          kind: worker
+          provenance:
+            owner: https://runtimeconditions.io/conformance/transitive-leaf:1.0.0
+            extensionSha256: bb92905f025afe381aed2e27a555556b32662b2ed957eada086857da87c766bd
+            coordinate: kind:worker
+    interfaces:
+        - coordinate: interface:worker:process
+          owner: https://runtimeconditions.io/conformance/transitive-middle:1.0.0
+          kind: worker
+          type: process
+          provenance:
+            owner: https://runtimeconditions.io/conformance/transitive-middle:1.0.0
+            extensionSha256: 22f202e8e90af91c88d03f693336bbc3f5e76fda184911d38f753971eafd0699
+            coordinate: interface:worker:process
+scopes:
+    - coordinate: 'worker:'
+      kind: worker
+    - coordinate: worker:process
+      kind: worker
+      interfaceType: process

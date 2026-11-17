@@ -1,0 +1,116 @@
+apiVersion: runtimeconditions.io/binding-model/v1alpha1
+kind: RuntimeConditionsBindingModel
+metadata:
+    semanticSha256: 9bba249d855db42b7b1fb28a31d319a3e9233fe3206d78de6e3e38a2fb1ae5a9
+    normalizer:
+        name: rc-binding-model
+        version: 0.1.0
+        sha256: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+coreProfileSchema:
+    id: https://runtimeconditions.io/schemas/profile/0.4.0/runtimeconditions.profile.schema.yaml
+    version: 0.4.0
+    semanticSha256: ed447dccefd7507d905b0b6177b1386d8ee96a1d053b731939a9a7ae973d5af1
+rootExtension:
+    id: https://runtimeconditions.io/conformance/additive-field-base:1.0.0
+    version: 1.0.0
+    semanticSha256: aaf48ea9d2f8d20b2fd2937e994ad7ea31b758569ea7f33b00cd5fc4fe31175b
+extensions:
+    - id: https://runtimeconditions.io/conformance/additive-field-base:1.0.0
+      version: 1.0.0
+      semanticSha256: aaf48ea9d2f8d20b2fd2937e994ad7ea31b758569ea7f33b00cd5fc4fe31175b
+vocabulary:
+    owners:
+        - coordinate: interface:service:http
+          category: interface
+          owner: https://runtimeconditions.io/conformance/additive-field-base:1.0.0
+          kind: service
+          interfaceType: http
+        - coordinate: kind:service
+          category: kind
+          owner: https://runtimeconditions.io/conformance/additive-field-base:1.0.0
+          kind: service
+    ownedDeclarations:
+        - coordinate: kind:service
+          owner: https://runtimeconditions.io/conformance/additive-field-base:1.0.0
+          kind: service
+          provenance:
+            owner: https://runtimeconditions.io/conformance/additive-field-base:1.0.0
+            extensionSha256: aaf48ea9d2f8d20b2fd2937e994ad7ea31b758569ea7f33b00cd5fc4fe31175b
+            coordinate: kind:service
+    interfaces:
+        - coordinate: interface:service:http
+          owner: https://runtimeconditions.io/conformance/additive-field-base:1.0.0
+          kind: service
+          type: http
+          provenance:
+            owner: https://runtimeconditions.io/conformance/additive-field-base:1.0.0
+            extensionSha256: aaf48ea9d2f8d20b2fd2937e994ad7ea31b758569ea7f33b00cd5fc4fe31175b
+            coordinate: interface:service:http
+scopes:
+    - coordinate: service:http
+      kind: service
+      interfaceType: http
+      applicableSchemas:
+        - https://runtimeconditions.io/conformance/additive-field-base:1.0.0#schema:base-service-http
+      projection:
+        kind: object
+        properties:
+            - name: interface
+              shape:
+                kind: object
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/additive-field-base:1.0.0
+                    extensionSha256: aaf48ea9d2f8d20b2fd2937e994ad7ea31b758569ea7f33b00cd5fc4fe31175b
+                    coordinate: https://runtimeconditions.io/conformance/additive-field-base:1.0.0#schema:base-service-http
+                    jsonPointer: /properties/interface
+              provenance:
+                owner: https://runtimeconditions.io/conformance/additive-field-base:1.0.0
+                extensionSha256: aaf48ea9d2f8d20b2fd2937e994ad7ea31b758569ea7f33b00cd5fc4fe31175b
+                coordinate: https://runtimeconditions.io/conformance/additive-field-base:1.0.0#schema:base-service-http
+                jsonPointer: /properties/interface
+        provenance:
+            owner: https://runtimeconditions.io/conformance/additive-field-base:1.0.0
+            extensionSha256: aaf48ea9d2f8d20b2fd2937e994ad7ea31b758569ea7f33b00cd5fc4fe31175b
+            coordinate: https://runtimeconditions.io/conformance/additive-field-base:1.0.0#schema:base-service-http
+schemas:
+    - coordinate: https://runtimeconditions.io/conformance/additive-field-base:1.0.0#schema:base-service-http
+      owner: https://runtimeconditions.io/conformance/additive-field-base:1.0.0
+      id: base-service-http
+      kind: service
+      interfaceType: http
+      exact:
+        additionalProperties: true
+        properties:
+            interface:
+                additionalProperties: false
+                properties:
+                    type:
+                        const: http
+                type: object
+            kind:
+                const: service
+        type: object
+      projection:
+        kind: object
+        properties:
+            - name: interface
+              shape:
+                kind: object
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/additive-field-base:1.0.0
+                    extensionSha256: aaf48ea9d2f8d20b2fd2937e994ad7ea31b758569ea7f33b00cd5fc4fe31175b
+                    coordinate: https://runtimeconditions.io/conformance/additive-field-base:1.0.0#schema:base-service-http
+                    jsonPointer: /properties/interface
+              provenance:
+                owner: https://runtimeconditions.io/conformance/additive-field-base:1.0.0
+                extensionSha256: aaf48ea9d2f8d20b2fd2937e994ad7ea31b758569ea7f33b00cd5fc4fe31175b
+                coordinate: https://runtimeconditions.io/conformance/additive-field-base:1.0.0#schema:base-service-http
+                jsonPointer: /properties/interface
+        provenance:
+            owner: https://runtimeconditions.io/conformance/additive-field-base:1.0.0
+            extensionSha256: aaf48ea9d2f8d20b2fd2937e994ad7ea31b758569ea7f33b00cd5fc4fe31175b
+            coordinate: https://runtimeconditions.io/conformance/additive-field-base:1.0.0#schema:base-service-http
+      provenance:
+        owner: https://runtimeconditions.io/conformance/additive-field-base:1.0.0
+        extensionSha256: aaf48ea9d2f8d20b2fd2937e994ad7ea31b758569ea7f33b00cd5fc4fe31175b
+        coordinate: https://runtimeconditions.io/conformance/additive-field-base:1.0.0#schema:base-service-http

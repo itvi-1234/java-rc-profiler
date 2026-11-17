@@ -1,0 +1,50 @@
+apiVersion: runtimeconditions.io/v1alpha1
+kind: RuntimeConditionsExtensionDefinition
+metadata:
+  id: https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+  version: 1.0.0
+spec:
+  kinds:
+    - name: collection
+  interfaceTypes:
+    - name: items
+      targetKind: collection
+  schemas:
+    - id: collection-shapes
+      description: Scalar arrays, object arrays, and schema-valued maps.
+      appliesToKind: collection
+      appliesToInterfaceType: items
+      schema:
+        type: object
+        required: [kind, interface]
+        properties:
+          kind:
+            const: collection
+          interface:
+            type: object
+            required: [type]
+            properties:
+              type:
+                const: items
+            additionalProperties: false
+          tags:
+            type: array
+            items:
+              type: string
+          entries:
+            type: array
+            items:
+              type: object
+              required: [key, value]
+              properties:
+                key:
+                  type: string
+                value:
+                  type: integer
+                  enum: [1, 2]
+              additionalProperties: false
+          labels:
+            type: object
+            additionalProperties:
+              type: string
+        additionalProperties: false

@@ -1,0 +1,18 @@
+apiVersion: runtimeconditions.io/v1alpha1
+kind: RuntimeConditionsProfile
+metadata:
+  name: scoped
+workload:
+  uri: https://services.example.com/scoped
+extensions:
+  - https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+conditions:
+  - kind: service
+    interface:
+      type: http
+    base_url: https://x
+    mode: proxy
+  - kind: service
+    interface:
+      type: grpc
+    mode: streaming

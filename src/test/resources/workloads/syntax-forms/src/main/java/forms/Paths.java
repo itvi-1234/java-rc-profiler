@@ -1,6 +1,6 @@
 package forms;
 
 public interface Paths {
-    String HEALTH = "/health";
-    String API = "/api";
+    String HOST = "https://example.com";
+    String REGION = "eu";
 }

@@ -1,0 +1,44 @@
+apiVersion: runtimeconditions.io/v1alpha1
+kind: RuntimeConditionsProfile
+metadata:
+  name: forms
+workload:
+  uri: https://services.example.com/forms
+extensions:
+  - https://runtimeconditions.io/conformance/collections-and-maps:1.0.0
+  - https://runtimeconditions.io/conformance/heterogeneous-union:1.0.0
+  - https://runtimeconditions.io/conformance/owned-kind-interface:1.0.0
+conditions:
+  - kind: collection
+    interface:
+      type: items
+    labels:
+      a: '1'
+      b: static
+    tags:
+      - static
+      - dynamic
+  - kind: collection
+    interface:
+      type: items
+    labels: {}
+    tags: []
+  - kind: selector
+    interface:
+      type: target
+    target: static-name
+  - kind: service
+    interface:
+      type: http
+      endpoint: https://example.com/v1
+    region: eu
+  - kind: service
+    interface:
+      type: http
+      endpoint: https://example.com/v1/local
+    region: west
+  - kind: service
+    interface:
+      type: http
+      endpoint: https://example.com/instance
+    region: south

@@ -1,0 +1,19 @@
+apiVersion: runtimeconditions.io/v1alpha1
+kind: RuntimeConditionsProfile
+metadata:
+  name: alternatives
+workload:
+  uri: https://services.example.com/alternatives
+extensions:
+  - https://runtimeconditions.io/conformance/object-alternatives:1.0.0
+conditions:
+  - kind: deployment
+    interface:
+      type: process
+    configuration:
+      command: run
+  - kind: deployment
+    interface:
+      type: process
+    configuration:
+      image: app:1

@@ -1,0 +1,13 @@
+apiVersion: runtimeconditions.io/v1alpha1
+kind: RuntimeConditionsProfile
+metadata:
+  name: dependencyonly
+workload:
+  uri: https://services.example.com/dependencyonly
+extensions:
+  - https://runtimeconditions.io/conformance/dependency-schema-only-root:1.0.0
+conditions:
+  - kind: job
+    interface:
+      type: process
+    command: run

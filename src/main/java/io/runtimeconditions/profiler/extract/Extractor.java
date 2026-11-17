@@ -496,7 +496,9 @@ public final class Extractor {
                 if (construct.equals("scalar") && entry.has("members") && entry.path("members").size() > 0) {
                     throw new ProfilerException(STAGE, type.name() + " is an enum; use one of its constants", where);
                 }
-                Expected inside = new Expected(binding, wrappedReference(entry));
+                // A wrapper carries one field, whose reference says what the value is; the others wrap an element or scalar.
+                JsonNode reference = construct.equals("wrapper") ? entry.path("fields").get(0).path("value") : wrappedReference(entry);
+                Expected inside = new Expected(binding, reference);
                 return new Instance(binding, entry, evaluate(arguments.get(0), source, scope, inside, new HashSet<>()));
             }
             default -> throw new ProfilerException(STAGE, "unsupported generated construct " + construct, where);

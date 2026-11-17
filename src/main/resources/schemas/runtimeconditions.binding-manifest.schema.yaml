@@ -199,14 +199,14 @@ allOf:
           items:
             required: [functionClass]
             properties:
-              file: {pattern: '^[A-Za-z_][A-Za-z0-9_]*\.java$'}
+              file: {pattern: '^[^./\\\s]+\.java$'}
         importedMarkerContracts:
           items:
             required: [providerPackage]
         types:
           items:
             properties:
-              file: {pattern: '^[A-Za-z_][A-Za-z0-9_]*\.java$'}
+              file: {pattern: '^[^./\\\s]+\.java$'}
 $defs:
   extensionIdentifier:
     type: string

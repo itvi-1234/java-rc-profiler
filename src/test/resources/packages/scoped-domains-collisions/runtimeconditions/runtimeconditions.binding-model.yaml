@@ -1,0 +1,421 @@
+apiVersion: runtimeconditions.io/binding-model/v1alpha1
+kind: RuntimeConditionsBindingModel
+metadata:
+    semanticSha256: 7b963a87a768c3df63b1f177a80d398c808b5071d28e815066d86a0473acb7cf
+    normalizer:
+        name: rc-binding-model
+        version: 0.1.0
+        sha256: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+coreProfileSchema:
+    id: https://runtimeconditions.io/schemas/profile/0.4.0/runtimeconditions.profile.schema.yaml
+    version: 0.4.0
+    semanticSha256: ed447dccefd7507d905b0b6177b1386d8ee96a1d053b731939a9a7ae973d5af1
+rootExtension:
+    id: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+    version: 1.0.0
+    semanticSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+extensions:
+    - id: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+      version: 1.0.0
+      semanticSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+vocabulary:
+    owners:
+        - coordinate: condition-field:service:grpc:mode
+          category: condition-field
+          owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+          kind: service
+          interfaceType: grpc
+          path: mode
+        - coordinate: condition-field:service:http:base_url
+          category: condition-field
+          owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+          kind: service
+          interfaceType: http
+          path: base_url
+        - coordinate: condition-field:service:http:mode
+          category: condition-field
+          owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+          kind: service
+          interfaceType: http
+          path: mode
+        - coordinate: field-domain:service:grpc:mode:"streaming"
+          category: field-value
+          owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+          kind: service
+          interfaceType: grpc
+          path: mode
+          value: streaming
+        - coordinate: field-domain:service:http:mode:"direct"
+          category: field-value
+          owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+          kind: service
+          interfaceType: http
+          path: mode
+          value: direct
+        - coordinate: field-domain:service:http:mode:"proxy"
+          category: field-value
+          owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+          kind: service
+          interfaceType: http
+          path: mode
+          value: proxy
+        - coordinate: interface:service:grpc
+          category: interface
+          owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+          kind: service
+          interfaceType: grpc
+        - coordinate: interface:service:http
+          category: interface
+          owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+          kind: service
+          interfaceType: http
+        - coordinate: kind:service
+          category: kind
+          owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+          kind: service
+    ownedDeclarations:
+        - coordinate: kind:service
+          owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+          kind: service
+          provenance:
+            owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+            extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+            coordinate: kind:service
+    interfaces:
+        - coordinate: interface:service:grpc
+          owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+          kind: service
+          type: grpc
+          provenance:
+            owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+            extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+            coordinate: interface:service:grpc
+        - coordinate: interface:service:http
+          owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+          kind: service
+          type: http
+          provenance:
+            owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+            extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+            coordinate: interface:service:http
+    conditionFields:
+        - coordinate: condition-field:service:grpc:mode
+          owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+          kind: service
+          interfaceType: grpc
+          path: mode
+          segments:
+            - name: mode
+          provenance:
+            owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+            extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+            coordinate: condition-field:service:grpc:mode
+        - coordinate: condition-field:service:http:base_url
+          owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+          kind: service
+          interfaceType: http
+          path: base_url
+          segments:
+            - name: base_url
+          provenance:
+            owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+            extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+            coordinate: condition-field:service:http:base_url
+        - coordinate: condition-field:service:http:mode
+          owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+          kind: service
+          interfaceType: http
+          path: mode
+          segments:
+            - name: mode
+          provenance:
+            owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+            extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+            coordinate: condition-field:service:http:mode
+    valueDomains:
+        - coordinate: field-domain:service:grpc:mode
+          owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+          kind: service
+          interfaceType: grpc
+          path: mode
+          segments:
+            - name: mode
+          values:
+            - value: streaming
+          provenance:
+            owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+            extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+            coordinate: field-domain:service:grpc:mode
+        - coordinate: field-domain:service:http:mode
+          owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+          kind: service
+          interfaceType: http
+          path: mode
+          segments:
+            - name: mode
+          values:
+            - value: direct
+            - value: proxy
+          provenance:
+            owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+            extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+            coordinate: field-domain:service:http:mode
+scopes:
+    - coordinate: service:grpc
+      kind: service
+      interfaceType: grpc
+      applicableSchemas:
+        - https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-grpc
+      projection:
+        kind: object
+        required:
+            - interface
+        properties:
+            - name: interface
+              required: true
+              shape:
+                kind: object
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                    extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                    coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-grpc
+                    jsonPointer: /properties/interface
+              provenance:
+                owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-grpc
+                jsonPointer: /properties/interface
+            - name: mode
+              shape:
+                kind: scalar
+                scalar: string
+                values:
+                    - value: streaming
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                    extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                    coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-grpc
+                    jsonPointer: /properties/mode
+              provenance:
+                owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-grpc
+                jsonPointer: /properties/mode
+        provenance:
+            owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+            extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+            coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-grpc
+    - coordinate: service:http
+      kind: service
+      interfaceType: http
+      applicableSchemas:
+        - https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-http
+      projection:
+        kind: object
+        required:
+            - interface
+        properties:
+            - name: base_url
+              shape:
+                kind: scalar
+                scalar: string
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                    extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                    coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-http
+                    jsonPointer: /properties/base_url
+              provenance:
+                owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-http
+                jsonPointer: /properties/base_url
+            - name: interface
+              required: true
+              shape:
+                kind: object
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                    extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                    coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-http
+                    jsonPointer: /properties/interface
+              provenance:
+                owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-http
+                jsonPointer: /properties/interface
+            - name: mode
+              shape:
+                kind: scalar
+                scalar: string
+                values:
+                    - value: direct
+                    - value: proxy
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                    extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                    coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-http
+                    jsonPointer: /properties/mode
+              provenance:
+                owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-http
+                jsonPointer: /properties/mode
+        provenance:
+            owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+            extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+            coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-http
+schemas:
+    - coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-grpc
+      owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+      id: service-grpc
+      kind: service
+      interfaceType: grpc
+      exact:
+        additionalProperties: false
+        properties:
+            interface:
+                additionalProperties: false
+                properties:
+                    type:
+                        const: grpc
+                required:
+                    - type
+                type: object
+            kind:
+                const: service
+            mode:
+                const: streaming
+        required:
+            - interface
+            - kind
+        type: object
+      projection:
+        kind: object
+        required:
+            - interface
+        properties:
+            - name: interface
+              required: true
+              shape:
+                kind: object
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                    extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                    coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-grpc
+                    jsonPointer: /properties/interface
+              provenance:
+                owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-grpc
+                jsonPointer: /properties/interface
+            - name: mode
+              shape:
+                kind: scalar
+                scalar: string
+                values:
+                    - value: streaming
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                    extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                    coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-grpc
+                    jsonPointer: /properties/mode
+              provenance:
+                owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-grpc
+                jsonPointer: /properties/mode
+        provenance:
+            owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+            extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+            coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-grpc
+      provenance:
+        owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+        extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+        coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-grpc
+    - coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-http
+      owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+      id: service-http
+      kind: service
+      interfaceType: http
+      exact:
+        additionalProperties: false
+        properties:
+            base_url:
+                type: string
+            interface:
+                additionalProperties: false
+                properties:
+                    type:
+                        const: http
+                required:
+                    - type
+                type: object
+            kind:
+                const: service
+            mode:
+                enum:
+                    - direct
+                    - proxy
+                type: string
+        required:
+            - interface
+            - kind
+        type: object
+      projection:
+        kind: object
+        required:
+            - interface
+        properties:
+            - name: base_url
+              shape:
+                kind: scalar
+                scalar: string
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                    extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                    coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-http
+                    jsonPointer: /properties/base_url
+              provenance:
+                owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-http
+                jsonPointer: /properties/base_url
+            - name: interface
+              required: true
+              shape:
+                kind: object
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                    extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                    coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-http
+                    jsonPointer: /properties/interface
+              provenance:
+                owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-http
+                jsonPointer: /properties/interface
+            - name: mode
+              shape:
+                kind: scalar
+                scalar: string
+                values:
+                    - value: direct
+                    - value: proxy
+                provenance:
+                    owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                    extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                    coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-http
+                    jsonPointer: /properties/mode
+              provenance:
+                owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+                extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+                coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-http
+                jsonPointer: /properties/mode
+        provenance:
+            owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+            extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+            coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-http
+      provenance:
+        owner: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0
+        extensionSha256: f858b232636a8b4082ec50ebe05f80906728f358d91ada39f06bd898b27bb62f
+        coordinate: https://runtimeconditions.io/conformance/scoped-domains-collisions:1.0.0#schema:service-http
