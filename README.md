@@ -120,5 +120,7 @@ mvn verify
 
 The tests use binding packages in `src/test/resources/packages`, built by the Java binding emitter from
 the same models as the TypeScript profiler's test packages. The profiles they produce are compared with
-the ones the TypeScript profiler's tests review. `scripts/assemble-binding-package.py` shows how a
-package's resources are assembled.
+the ones the TypeScript profiler's tests review. They have the layout that
+[`ci/generate-java.py`](https://github.com/runtimeconditions/extensions/blob/main/tooling/extension-bindings/ci/generate-java.py)
+in `runtimeconditions/extensions` generates: the three resources and a file manifest in the
+`runtimeconditions` directory.
