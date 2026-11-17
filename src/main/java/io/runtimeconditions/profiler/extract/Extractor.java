@@ -197,10 +197,10 @@ public final class Extractor {
         Map<String, Binding> found = new LinkedHashMap<>();
         for (SourceFile source : sources.values()) {
             for (SourceFile.Import item : source.imports) {
-                String owner = item.isStatic() && !item.qualifier().isEmpty() ? item.qualifier() : item.qualifier();
-                Binding binding = catalog.byJavaPackage(owner);
+                // a.b.Type or a.b.* names the package a.b; a static import a.b.Type.member or a.b.Type.* names a.b.Type.
+                Binding binding = catalog.byJavaPackage(item.qualifier());
                 if (binding == null && item.isStatic()) {
-                    binding = catalog.byJavaPackage(parent(owner));
+                    binding = catalog.byJavaPackage(parent(item.qualifier()));
                 }
                 if (binding != null) {
                     found.put(binding.root().toString(), binding);

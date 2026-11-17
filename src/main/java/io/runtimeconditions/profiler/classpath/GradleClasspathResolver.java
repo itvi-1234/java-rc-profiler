@@ -19,7 +19,7 @@ public final class GradleClasspathResolver implements ClasspathResolver {
     }
 
     @Override
-    public List<Path> resolve(Path projectRoot, List<Path> modules) throws IOException {
+    public List<Path> resolve(Path projectRoot) throws IOException {
         Path root = projectRoot.toAbsolutePath().normalize();
         Set<Path> entries = ClasspathEntries.set();
 
@@ -52,9 +52,6 @@ public final class GradleClasspathResolver implements ClasspathResolver {
             Files.deleteIfExists(initScript);
         }
         addGradleOutput(entries, root);
-        for (Path module : modules) {
-            addGradleOutput(entries, module);
-        }
         return new ArrayList<>(entries);
     }
 
@@ -69,8 +66,6 @@ public final class GradleClasspathResolver implements ClasspathResolver {
     private void addGradleOutput(Set<Path> entries, Path project) {
         ClasspathEntries.addIfExists(entries, project.resolve("build/classes/java/main"));
         ClasspathEntries.addIfExists(entries, project.resolve("build/resources/main"));
-        ClasspathEntries.addIfExists(entries, project.resolve("build/classes/java/test"));
-        ClasspathEntries.addIfExists(entries, project.resolve("build/resources/test"));
     }
 
     private String initScript() {

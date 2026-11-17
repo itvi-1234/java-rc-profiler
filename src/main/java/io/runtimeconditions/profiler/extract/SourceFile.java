@@ -15,9 +15,6 @@ import java.util.List;
 final class SourceFile {
     /** An import such as a.b.C, a.b.*, or static a.b.C.member. */
     record Import(String qualifier, String name, boolean isStatic, boolean onDemand) {
-        String full() {
-            return onDemand ? qualifier + ".*" : qualifier + "." + name;
-        }
     }
 
     final Path path;

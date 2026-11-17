@@ -40,7 +40,7 @@ public final class BuildClasspath {
             throw new ProfilerException("classpath", "--resolve-build-classpath needs a pom.xml or a Gradle build in the project", project.toString());
         }
         try {
-            return new ArrayList<>(new BuildToolClasspathResolver(runner).resolve(project, tool, List.of()));
+            return new ArrayList<>(new BuildToolClasspathResolver(runner).resolve(project, tool));
         } catch (IOException e) {
             throw new ProfilerException("classpath", e.getMessage(), project.toString());
         }

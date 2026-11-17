@@ -40,12 +40,6 @@ public final class Catalog {
         byJavaPackage.put(binding.javaPackage(), binding);
     }
 
-    public List<Binding> all() {
-        List<Binding> list = new ArrayList<>(byPath.values());
-        list.sort(Comparator.comparing(Binding::coordinate));
-        return list;
-    }
-
     public Binding byJavaPackage(String name) {
         return byJavaPackage.get(name);
     }
