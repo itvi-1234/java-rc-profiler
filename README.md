@@ -67,6 +67,21 @@ A value it cannot determine, such as a method call, a parameter, or a field that
 with the file, line, and column. It never produces a partial condition. Sources under `src/test`,
 build output (`target`, `build`, `out`), hidden directories, and symbolic links are not read.
 
+## Choosing the JDK
+
+The profiler is a jar, so it runs on whichever JDK starts it. The **rc-profiler-java** launcher in
+`distribution/` starts it on the JDK a Java developer would expect, the first of:
+
+1. **RC_JAVA_HOME**, to use a different JDK from your build's own;
+2. **JAVA_HOME**, which Maven, Gradle, IDEs, SDKMAN and CI setup steps set;
+3. the runtime bundled next to the jar, in a system package;
+4. **java** on **PATH**.
+
+A variable that is set but names no JDK is an error; the launcher never falls back past it. The JDK must be
+17 or newer, and at least as new as the Java your code uses, because it supplies the parser. Set
+**RC_JAVA_PROFILER_JAR** to run a jar by its path. The launcher is a POSIX shell script; on Windows run
+`java -jar` directly.
+
 ## Generate a profile
 
 ```sh
