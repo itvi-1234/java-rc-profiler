@@ -1,0 +1,15 @@
+apiVersion: runtimeconditions.io/v1alpha1
+kind: RuntimeConditionsProfile
+metadata:
+  name: transitive
+workload:
+  uri: https://services.example.com/transitive
+extensions:
+  - https://runtimeconditions.io/conformance/transitive-leaf:1.0.0
+  - https://runtimeconditions.io/conformance/transitive-middle:1.0.0
+  - https://runtimeconditions.io/conformance/transitive-root:1.0.0
+conditions:
+  - kind: worker
+    interface:
+      type: process
+    command: run

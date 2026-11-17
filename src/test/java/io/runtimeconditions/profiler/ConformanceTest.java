@@ -21,6 +21,7 @@ class ConformanceTest {
     @CsvSource(delimiter = '|', value = {
             "owned|an owned kind and interface, and a condition field|owned-kind-interface",
             "additive|a field added by a second extension|additive-field,additive-field-dependency",
+            "transitive|dependencies through an extension that declares only an interface type|transitive-closure,transitive-closure-middle,transitive-closure-leaf",
             "alternatives|object alternatives|object-alternatives",
             "union|a union of an object and a string|heterogeneous-union",
             "collections|lists, maps, and lists of objects|collections-and-maps",

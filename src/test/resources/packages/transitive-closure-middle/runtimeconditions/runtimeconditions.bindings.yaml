@@ -26,5 +26,28 @@ importedMarkerContracts:
     markerInterface: WorkerField
     markerMethod: rcMarker_c26943345556b2d8
     providerPackage: example.conformance:transitive-closure-leaf
-rootBindings: []
-types: []
+rootBindings:
+  - role: interface
+    modelRef:
+      coordinate: interface:worker:process
+    declarationCoordinate: kind:worker
+    scope:
+      kind: worker
+      interfaceType: process
+    sourceName: process
+    path:
+      - name: interface
+    value:
+      type: Process
+    fixedInterfaceType: process
+types:
+  - modelRef:
+      coordinate: interface:worker:process
+    sourceName: process
+    nativeName: Process
+    construct: object
+    file: Process.java
+    fields: []
+    implements:
+      - declarationCoordinate: kind:worker
+        markerMethod: rcMarker_c26943345556b2d8

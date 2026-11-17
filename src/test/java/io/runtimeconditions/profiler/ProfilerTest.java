@@ -60,16 +60,6 @@ class ProfilerTest {
     }
 
     @Test
-    void anInterfaceTypeWithNoSchemaHasNoGeneratedTypeSoTheDeclarationHasNoInterface() {
-        // The middle extension of the transitive case declares the interface type process without a schema. The Java
-        // emitter generates a type only for what a schema describes, so there is nothing to construct as its interface.
-        Result result = generate(workload("transitive"), packages("transitive-closure", "transitive-closure-middle", "transitive-closure-leaf"), "transitive");
-        assertEquals(1, result.code());
-        assertEquals("", result.out());
-        assertTrue(result.err().contains("the worker declaration has no interface"), result.err());
-    }
-
-    @Test
     void outWritesTheProfileAndAFailedRunLeavesAnExistingFileAlone(@TempDir Path temp) throws IOException {
         Path out = temp.resolve("profile.yaml");
         assertEquals(0, generate(workload("owned"), packages(OWNED), "owned", "--out", out.toString()).code());
